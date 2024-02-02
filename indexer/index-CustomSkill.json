@@ -1,0 +1,24 @@
+{
+  "@odata.type": "#Microsoft.Skills.Custom.WebApiSkill",
+  "uri": "https://fnindexersummarizer.azurewebsites.net/api/doc_summarizer?code=<FUNCTION LEVEL AUTH CODE>&clientId=default",
+  "httpHeaders": "",
+  "httpMethod": "POST",
+  "timeout": "PT60S",
+  "batchSize": 1,
+  "degreeOfParallelism": 1,
+  "name": "#5",
+  "description": "Summarize the incoming document and store in a summary field in the index",
+  "context": "/document",
+  "inputs": [
+    {
+      "name": "text",
+      "source": "/document/merged_content"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "summary",
+      "targetName": "summary"
+    }
+  ]
+}
