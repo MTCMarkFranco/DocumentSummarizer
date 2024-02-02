@@ -11,7 +11,7 @@
   "context": "/document",
   "inputs": [
     {
-      "name": "text",
+      "name": "merged_content",
       "source": "/document/merged_content"
     }
   ],
