@@ -3,25 +3,51 @@ import datetime
 import json
 import logging
 
+class Data:
+    def __init__(self, merged_content):
+        self.merged_content = merged_content
+
+class Record:
+    def __init__(self, recordId, data):
+        self.recordId = recordId
+        self.data = data
+                
 app = func.FunctionApp()
 
-@app.route(route="doc_summarizer", auth_level=func.AuthLevel.FUNCTION)
+@app.route(route="doc_summarizer",methods=["POST"], auth_level=func.AuthLevel.FUNCTION)
 def doc_summarizer(req: func.HttpRequest) -> func.HttpResponse:
-    logging.info('Python HTTP trigger function processed a request.')
+    logging.error('Python HTTP trigger function processed a request.')
 
-    document = req.params.get('document')
-    if not document:
-        try:
-            req_body = req.get_json()
-        except ValueError:
-            pass
-        else:
-            document = req_body.get('document')
+    req_body = req.get_json()
+    first_item = req_body.get('values', [{}])[0]
+    record = Record(**first_item)
+    documentcontent = Data(**record.data)
+    
+    # Two Pieces of Info We Need
+    recordid = record.recordId
+    document = documentcontent.merged_content
+    
+    
+    summary = "The Summary of the Document that will be returned for every document"
+    
+    response = {
+        "values": [
+            {
+                "recordId": recordid,
+                "data": {
+                    "extractivesummary": summary
+                },
+                "errors": [],
+                "warnings": []
+            }
+        ]
+    }
+    logging.log(logging.INFO, f"Response: {response}")
 
-    if document:
-        return func.HttpResponse(f"Hello, {document}. This HTTP triggered function executed successfully.")
-    else:
-        return func.HttpResponse(
-             "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response.",
-             status_code=200
-        )
+    return func.HttpResponse(f"{response}", mimetype="application/json", status_code=200)
+    
+    
+    
+    
+    
+   
