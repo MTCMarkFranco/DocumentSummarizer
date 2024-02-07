@@ -13,7 +13,15 @@ class Record:
     def __init__(self, recordId, data):
         self.recordId = recordId
         self.data = data
-                
+
+def summarize_document(record, summarizer):
+    """Summarize a document using a given summarizer."""
+    documentcontent = Data(**record.data)
+    document = documentcontent.merged_content
+    summary = summarizer.summarize(document)
+    logging.info(f"Summarizer Response: {summary}")
+    return summary
+
 app = func.FunctionApp()
 
 @app.route(route="doc_summarizer",methods=["POST"], auth_level=func.AuthLevel.FUNCTION)
@@ -24,26 +32,28 @@ def doc_summarizer(req: func.HttpRequest) -> func.HttpResponse:
     key = os.getenv('LANG_KEY')
     endpoint = os.getenv('LANG_ENDPOINT')
 
-    # Get the Request Body
-    req_body = req.get_json()
-    first_item = req_body.get('values', [{}])[0]
-    record = Record(**first_item)
-    documentcontent = Data(**record.data)
-    
-    # Two Pieces of Info We Need
-    recordid = record.recordId
-    document = documentcontent.merged_content
-       
-    # call summarizer
+    # Get the merged_content from the request body
+    try:
+        req_body = req.get_json()
+        first_item = req_body.get('values', [{}])[0]
+        record = Record(**first_item)
+    except Exception as e:
+        logging.error(f"Error parsing request body: {e}")
+        return func.HttpResponse(f"Error parsing request body: {e}", status_code=400)
+
+    # Call summarizer
     summarizer = Summarizer(key, endpoint)
-    summary = summarizer.summarize(document)
-    
-    logging.log(logging.INFO, f"Summarizer Response: {summary}")
-    
+    try:
+        summary = summarize_document(record, summarizer)
+    except Exception as e:
+        logging.error(f"Error summarizing document: {e}")
+        return func.HttpResponse(f"Error summarizing document: {e}", status_code=500)
+
+    # Send the summary back
     response = {
         "values": [
             {
-                "recordId": recordid,
+                "recordId": record.recordId,
                 "data": {
                     "summary": summary
                 },
@@ -52,12 +62,6 @@ def doc_summarizer(req: func.HttpRequest) -> func.HttpResponse:
             }
         ]
     }
-    logging.log(logging.INFO, f"Complete Response: {response}")
+    logging.info(f"Complete Response: {response}")
 
-    return func.HttpResponse(f"{response}", mimetype="application/json", status_code=200)
-    
-    
-    
-    
-    
-   
+    return func.HttpResponse(json.dumps(response), mimetype="application/json", status_code=200)

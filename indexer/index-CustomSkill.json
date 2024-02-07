@@ -1,6 +1,6 @@
 {
   "@odata.type": "#Microsoft.Skills.Custom.WebApiSkill",
-  "uri": "https://fnindexersummarizer.azurewebsites.net/api/doc_summarizer?code=<FUNCTION LEVEL AUTH CODE>&clientId=default",
+  "uri": "https://<YOUR-FUNCTION-NAME>.azurewebsites.net/api/doc_summarizer?code=<FUNCTION LEVEL AUTH CODE>&clientId=default",
   "httpHeaders": "",
   "httpMethod": "POST",
   "timeout": "PT60S",
