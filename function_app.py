@@ -39,7 +39,7 @@ handler.setFormatter(DurationFormatter('%(log_color)s%(levelname)s: Previous Ste
                         }))
 logger: logging.Logger = colorlog.getLogger("__INDEXER__")
 logger.addHandler(handler)
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.INFO)
     
 def summarize_document(record, summarizer):
     """Summarize a document using a given summarizer."""

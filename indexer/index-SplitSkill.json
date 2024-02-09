@@ -4,6 +4,9 @@
     "maximumPageLength": 4000,
     "pageOverlapLength": 100,
     "defaultLanguageCode": "en",
+    "name": "#5",
+    "description": "split the merged_content into a new field called content_chunked",
+    "context": "/document",
     "inputs": [
       {
         "name": "text",
@@ -16,7 +19,7 @@
     ],
     "outputs": [
       {
-        "name": "content_chunked",
+        "name": "textItems",
         "targetName": "content_chunked"
       }
     ]

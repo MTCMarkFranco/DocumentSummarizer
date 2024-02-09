@@ -1,0 +1,8 @@
+{
+    "sourceFieldName": "/document/summary",
+    "targetFieldName": "summary"
+},
+{
+   "sourceFieldName": "/document/content_chunked",
+   "targetFieldName": "content_chunked"
+}
