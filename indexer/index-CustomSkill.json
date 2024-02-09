@@ -11,8 +11,8 @@
   "context": "/document",
   "inputs": [
     {
-      "name": "merged_content",
-      "source": "/document/merged_content"
+      "name": "content_chunked",
+      "source": "/document/content_chunked"
     }
   ],
   "outputs": [

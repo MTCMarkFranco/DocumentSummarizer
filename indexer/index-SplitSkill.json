@@ -1,0 +1,23 @@
+{
+    "@odata.type": "#Microsoft.Skills.Text.SplitSkill",
+    "textSplitMode": "pages",
+    "maximumPageLength": 4000,
+    "pageOverlapLength": 100,
+    "defaultLanguageCode": "en",
+    "inputs": [
+      {
+        "name": "text",
+        "source": "/document/merged_content"
+      },
+      {
+          "name": "languageCode",
+          "source": "/document/language"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "content_chunked",
+        "targetName": "content_chunked"
+      }
+    ]
+  }
