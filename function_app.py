@@ -18,10 +18,10 @@ class DurationFormatter(colorlog.ColoredFormatter):
         record.duration = "{:.1f}".format(duration)
         return super().format(record)
     
-# content_chunked is an array of strings
+# text is an array of strings 5k characters or less
 class Data:
-    def __init__(self, content_chunked):
-        self.content_chunked = content_chunked
+    def __init__(self, text):
+        self.text = text
 
 class Record:
     def __init__(self, recordId, data):
@@ -44,7 +44,7 @@ logger.setLevel(logging.INFO)
 def summarize_document(record, summarizer):
     """Summarize a document using a given summarizer."""
     documentcontent = Data(**record.data)
-    documentchunks = documentcontent.content_chunked
+    documentchunks = documentcontent.text
     summary = summarizer.summarize(documentchunks)
     logger.info(f"Summarizer Response: {summary}")
     return summary

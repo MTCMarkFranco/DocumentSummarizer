@@ -1,17 +1,17 @@
 {
   "@odata.type": "#Microsoft.Skills.Custom.WebApiSkill",
-  "name": "#6",
+  "name": "#7",
   "description": "Summarize the incoming document and store in a summary field in the index",
-  "context": "/document/content/pages/*",
+  "context": "/document/content/pages50k/*",
   "uri": "https://fnindexersummarizer.azurewebsites.net/api/doc_summarizer?code=DuFdkDwHgb8OpsonlpDFQvFR4qOuQcSQ6cZzJktaHlt8AzFups_2XA==",
   "httpMethod": "POST",
-  "timeout": "PT30S",
+  "timeout": "PT2M",
   "batchSize": 1,
   "degreeOfParallelism": 1,
   "inputs": [
     {
       "name": "text",
-      "source": "/document/content/pages/*"
+      "source": "/document/content/pages50k/*"
     }
   ],
   "outputs": [
