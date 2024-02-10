@@ -1,0 +1,26 @@
+{
+  "@odata.type": "#Microsoft.Skills.Text.SplitSkill",
+  "textSplitMode": "pages",
+  "maximumPageLength": 50000,
+  "pageOverlapLength": 100,
+  "defaultLanguageCode": "en",
+  "name": "#6",
+  "description": "split the content into 120k Chunks for the Abstractive WebAPI Summarizer.",
+  "context": "/document",
+  "inputs": [
+    {
+      "name": "text",
+      "source": "/document/content"
+    },
+    {
+      "name": "languageCode",
+      "source": "/document/language"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "textItems",
+      "targetName": "pages50k"
+    }
+  ]
+}

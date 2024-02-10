@@ -1,18 +1,17 @@
 {
   "@odata.type": "#Microsoft.Skills.Custom.WebApiSkill",
-  "uri": "https://<YOUR-FUNCTION-NAME>.azurewebsites.net/api/doc_summarizer?code=<FUNCTION LEVEL AUTH CODE>&clientId=default",
-  "httpHeaders": "",
+  "name": "#7",
+  "description": "Summarize the incoming document and store in a summary field in the index",
+  "context": "/document/content/pages50k/*",
+  "uri": "https://fnindexersummarizer.azurewebsites.net/api/doc_summarizer?code=DuFdkDwHgb8OpsonlpDFQvFR4qOuQcSQ6cZzJktaHlt8AzFups_2XA==",
   "httpMethod": "POST",
-  "timeout": "PT60S",
+  "timeout": "PT2M",
   "batchSize": 1,
   "degreeOfParallelism": 1,
-  "name": "#5",
-  "description": "Summarize the incoming document and store in a summary field in the index",
-  "context": "/document",
   "inputs": [
     {
-      "name": "merged_content",
-      "source": "/document/merged_content"
+      "name": "text",
+      "source": "/document/content/pages50k/*"
     }
   ],
   "outputs": [
@@ -20,5 +19,6 @@
       "name": "summary",
       "targetName": "summary"
     }
-  ]
+  ],
+  "httpHeaders": {}
 }
