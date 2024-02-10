@@ -2,10 +2,10 @@
   "@odata.type": "#Microsoft.Skills.Custom.WebApiSkill",
   "name": "#7",
   "description": "Summarize the incoming document and store in a summary field in the index",
-  "context": "/document/content/pages50k/*",
-  "uri": "https://fnindexersummarizer.azurewebsites.net/api/doc_summarizer?code=DuFdkDwHgb8OpsonlpDFQvFR4qOuQcSQ6cZzJktaHlt8AzFups_2XA==",
+  "context": "/document",
+  "uri": "https://<YOUR_FUNCTION_NAME>.azurewebsites.net/api/doc_summarizer?code=<YOUR_CODE>",
   "httpMethod": "POST",
-  "timeout": "PT2M",
+  "timeout": "PT30S",
   "batchSize": 1,
   "degreeOfParallelism": 1,
   "inputs": [

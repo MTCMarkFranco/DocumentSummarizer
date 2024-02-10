@@ -36,7 +36,11 @@ class Summarizer:
     def summarize(self, documentchunks):
         """Summarize a list of document chunks."""
         summarizerResponses = []
-
+        
+        # need to test if documentchunks is a list of strings or just a string
+        if isinstance(documentchunks, str):
+            documentchunks = [documentchunks]
+        
         for documentchunk in documentchunks:
             summary = self.summarize_chunk(documentchunk)
             summarizerResponses.append(summary)

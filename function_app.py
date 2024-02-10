@@ -29,6 +29,7 @@ class Record:
         self.data = data
 
 handler = colorlog.StreamHandler()
+console_handler = logging.StreamHandler()
 handler.setFormatter(DurationFormatter('%(log_color)s%(levelname)s: Previous Step Time: %(duration)s(seconds). Next Step: %(message)s',
             log_colors={
                             'DEBUG': 'cyan',
@@ -39,7 +40,8 @@ handler.setFormatter(DurationFormatter('%(log_color)s%(levelname)s: Previous Ste
                         }))
 logger: logging.Logger = colorlog.getLogger("__INDEXER__")
 logger.addHandler(handler)
-logger.setLevel(logging.INFO)
+logger.addHandler(console_handler)
+logger.setLevel(logging.DEBUG)
     
 def summarize_document(record, summarizer):
     """Summarize a document using a given summarizer."""
@@ -59,6 +61,7 @@ def doc_summarizer(req: func.HttpRequest) -> func.HttpResponse:
     key = os.getenv('LANG_KEY')
     endpoint = os.getenv('LANG_ENDPOINT')
 
+    logger.info(req.get_json())
     # Get the merged_content from the request body
     try:
         req_body = req.get_json()
