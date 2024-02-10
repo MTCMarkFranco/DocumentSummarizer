@@ -2,16 +2,16 @@
   "@odata.type": "#Microsoft.Skills.Custom.WebApiSkill",
   "name": "#6",
   "description": "Summarize the incoming document and store in a summary field in the index",
-  "context": "/document",
+  "context": "/document/content/pages/*",
   "uri": "https://fnindexersummarizer.azurewebsites.net/api/doc_summarizer?code=DuFdkDwHgb8OpsonlpDFQvFR4qOuQcSQ6cZzJktaHlt8AzFups_2XA==",
   "httpMethod": "POST",
-  "timeout": "PT1M",
+  "timeout": "PT30S",
   "batchSize": 1,
   "degreeOfParallelism": 1,
   "inputs": [
     {
-      "name": "content_chunked",
-      "source": "/document/content_chunked"
+      "name": "text",
+      "source": "/document/content/pages/*"
     }
   ],
   "outputs": [

@@ -32,7 +32,7 @@ class Summarizer:
                 return "...Is an error with code '{}' and message '{}'".format(
                     result.error.code, result.error.message
                 )
-        
+          
     def summarize(self, documentchunks):
         """Summarize a list of document chunks."""
         summarizerResponses = []
@@ -41,8 +41,9 @@ class Summarizer:
             summary = self.summarize_chunk(documentchunk)
             summarizerResponses.append(summary)
 
-        # If summarizerResponses is not empty, join all strings into one
-        if summarizerResponses:
+        if len(summarizerResponses) == 1:
+            return summarizerResponses[0]
+        elif summarizerResponses:
             summarizerResponses = ' '.join(summarizerResponses)
             final_summary = self.summarize_chunk(summarizerResponses)
             return final_summary
