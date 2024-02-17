@@ -12,10 +12,6 @@
     {
       "name": "text",
       "source": "/document/content"
-    },
-    {
-      "name": "languageCode",
-      "source": "/document/language"
     }
   ],
   "outputs": [

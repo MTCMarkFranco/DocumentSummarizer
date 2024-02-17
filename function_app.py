@@ -1,10 +1,15 @@
+from ast import Dict
 import json
+from attr import dataclass, field
 import azure.functions as func
 from dotenv import load_dotenv
 import os
 import logging
 import colorlog
 import time
+from typing import List, Any, Optional
+
+#local imports
 from summarization_class import Summarizer
 
 class DurationFormatter(colorlog.ColoredFormatter):
@@ -18,15 +23,34 @@ class DurationFormatter(colorlog.ColoredFormatter):
         record.duration = "{:.1f}".format(duration)
         return super().format(record)
     
-# text is an array of strings 5k characters or less
-class Data:
+class InputData:
     def __init__(self, text):
         self.text = text
 
-class Record:
+class InputRecord:
     def __init__(self, recordId, data):
         self.recordId = recordId
         self.data = data
+        
+@dataclass
+class Error:
+    message: str
+
+@dataclass
+class Warning:
+    message: str
+
+@dataclass
+class Data:
+    summary: str
+
+@dataclass
+class Value:
+    recordId: str
+    data: Data
+    errors: List[Error]
+    warnings: List[Warning]
+        
 
 handler = colorlog.StreamHandler()
 console_handler = logging.StreamHandler()
@@ -42,14 +66,6 @@ logger: logging.Logger = colorlog.getLogger("__INDEXER__")
 logger.addHandler(handler)
 logger.addHandler(console_handler)
 logger.setLevel(logging.DEBUG)
-    
-def summarize_document(record, summarizer):
-    """Summarize a document using a given summarizer."""
-    documentcontent = Data(**record.data)
-    documentchunks = documentcontent.text
-    summary = summarizer.summarize(documentchunks)
-    logger.info(f"Summarizer Response: {summary}")
-    return summary
 
 app = func.FunctionApp()
 
@@ -65,33 +81,34 @@ def doc_summarizer(req: func.HttpRequest) -> func.HttpResponse:
     # Get the merged_content from the request body
     try:
         req_body = req.get_json()
-        first_item = req_body.get('values', [{}])[0]
-        record = Record(**first_item)
+        logger.info(f"Request Body: {json.dumps(req_body)}")
+        values = req_body.get('values', [{}])
+        records = [InputRecord(**value) for value in values]
     except Exception as e:
         logger.error(f"Error parsing request body: {e}")
         return func.HttpResponse(f"Error parsing request body: {e}", status_code=400)
 
     # Call summarizer
-    summarizer = Summarizer(key, endpoint)
     try:
-        summary = summarize_document(record, summarizer)
+        responseRecords = []
+        summarizer = Summarizer(key, endpoint)
+        
+        for record in records:
+            dataSection = InputData(**record.data)
+            record_id = record.recordId
+            document_chunk = dataSection.text
+            chunksummary = summarizer.summarize_chunk(document_chunk)
+            logger.info(f"Summary : {chunksummary}")
+            responseRecord = Value(recordId=record_id, data={"summary": chunksummary}, errors=None, warnings=None)
+            responseRecords.append(responseRecord)
+        
+        response = { "values": [record.__dict__ for record in responseRecords]}
+        
+        # Send the summary back
+        logger.info(f"Complete Response: {response}")
+        return func.HttpResponse(json.dumps(response), mimetype="application/json", status_code=200)    
+        
+        
     except Exception as e:
         logger.error(f"Error summarizing document: {e}")
         return func.HttpResponse(f"Error summarizing document: {e}", status_code=500)
-
-    # Send the summary back
-    response = {
-        "values": [
-            {
-                "recordId": record.recordId,
-                "data": {
-                    "summary": summary
-                },
-                "errors": [],
-                "warnings": []
-            }
-        ]
-    }
-    logger.info(f"Complete Response: {response}")
-
-    return func.HttpResponse(json.dumps(response), mimetype="application/json", status_code=200)

@@ -11,12 +11,12 @@ class Summarizer:
         self.logger = logging.getLogger("__INDEXER__")
 
     def summarize_chunk(self, documentchunk):
-        """Summarize a single chunk of a document."""
-        documentchunkrecord = [{'id': '1','text': documentchunk }]
+        
+        document_chunk_record = [{'id': '1','text': documentchunk }]
 
         try:
             poller = self.text_analytics_client.begin_abstract_summary(
-                documents=documentchunkrecord,
+                documents=document_chunk_record,
                 language='en',
                 sentence_count=4
             )
@@ -31,27 +31,4 @@ class Summarizer:
             elif result.is_error is True:
                 return "...Is an error with code '{}' and message '{}'".format(
                     result.error.code, result.error.message
-                )
-          
-    def summarize(self, documentchunks):
-        """Summarize a list of document chunks."""
-        summarizerResponses = []
-        
-        # need to test if documentchunks is a list of strings or just a string
-        if isinstance(documentchunks, str):
-            documentchunks = [documentchunks]
-        
-        for documentchunk in documentchunks:
-            summary = self.summarize_chunk(documentchunk)
-            summarizerResponses.append(summary)
-
-        if len(summarizerResponses) == 1:
-            return summarizerResponses[0]
-        elif summarizerResponses:
-            summarizerResponses = ' '.join(summarizerResponses)
-            final_summary = self.summarize_chunk(summarizerResponses)
-            return final_summary
-        else:
-            return "No summarizer responses found."
-
-        
+        )
