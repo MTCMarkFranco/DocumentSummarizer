@@ -1,0 +1,9 @@
+{
+    "search": "What was the procedure used in these experiments?",
+    "queryType": "semantic",
+    "semanticConfiguration": "sr-config",
+    "captions": "extractive",
+    "answers": "extractive|count-3",
+    "queryLanguage": "en-US",
+    "searchFields": "summary"
+  }
