@@ -1,4 +1,4 @@
 {
-    "sourceFieldName": "/document/summary",
+    "sourceFieldName": "/document/content/pages/*/summary",
     "targetFieldName": "summary"
 }

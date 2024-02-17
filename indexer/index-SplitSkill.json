@@ -1,3 +1,10 @@
+// This skillset might not be needed as i'm chunking at 5k Characters in the skills pipeline as that is the limit.
+// Example: 6MB PDF file = 151K character Size in Index = Chunked 31 times = which means 31 Records in One WebAPI Call because
+// we used the "batchSize": 1000 property in the webapi skillset. i.e. it will send up to 1000 chunks in one call.
+// Chunk #1-#30 = 5k,
+// Chunk #31 = remainder,
+// The above scenerio results in the indexer making 4 separate downstream webAPI calls to summarize
+
 {
   "@odata.type": "#Microsoft.Skills.Text.SplitSkill",
   "name": "#6",
