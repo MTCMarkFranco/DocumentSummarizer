@@ -10,6 +10,7 @@ class Summarizer:
         )
         self.logger = logging.getLogger("__INDEXER__")
 
+    # TODO: Change to Extractive Summarization and see if it improves the results
     def summarize_chunk(self, documentchunk):
         
         document_chunk_record = [{'id': '1','text': documentchunk }]
