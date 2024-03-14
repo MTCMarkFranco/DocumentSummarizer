@@ -5,6 +5,12 @@
 // Chunk #31 = remainder,
 // The above scenerio results in the indexer making 4 separate downstream webAPI calls to summarize
 
+
+// TODO:
+
+// 1. https://learn.microsoft.com/en-us/azure/search/cognitive-search-skill-azure-openai-embedding
+// 2. https://learn.microsoft.com/en-us/azure/search/cognitive-search-skill-document-extraction
+
 {
   "@odata.type": "#Microsoft.Skills.Text.SplitSkill",
   "name": "#6",
