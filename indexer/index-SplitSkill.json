@@ -10,6 +10,7 @@
 
 // 1. https://learn.microsoft.com/en-us/azure/search/cognitive-search-skill-azure-openai-embedding
 // 2. https://learn.microsoft.com/en-us/azure/search/cognitive-search-skill-document-extraction
+// 3. https://learn.microsoft.com/en-us/azure/search/cognitive-search-skill-shaper
 
 {
   "@odata.type": "#Microsoft.Skills.Text.SplitSkill",
